@@ -1,0 +1,27 @@
+{
+    "nodes": [
+      {"id": 1, "type": "CheckpointLoaderLight", "widgets": ["hunyuan3d-dit-v2-mv-fp16.safetensors"]},
+      {"id": 2, "type": "Hunyuan3Dv2ModelConditionMultiView"},
+      {"id": 3, "type": "LoadImage", "widgets": ["front.png"]},
+      {"id": 4, "type": "LoadImage", "widgets": ["side.png"]},
+      {"id": 5, "type": "LoadImage", "widgets": ["back.png"]},
+      {"id": 6, "type": "Hy3DGenerateMultiViewMesh", "widgets": [128, 5, true]},
+      {"id": 7, "type": "Hy3DBakeTextureMultiView", "widgets": [2048]},
+      {"id": 8, "type": "Hy3DPostProcessMesh", "widgets": [true, true, 50000]},
+      {"id": 9, "type": "Hy3DExportMesh", "widgets": ["output/multiview_glb.glb"]}
+    ],
+    "links": [
+      {"from": [1, "MODEL"], "to": [2, "model"]},
+      {"from": [3, "IMAGE"], "to": [2, "view0"]},
+      {"from": [4, "IMAGE"], "to": [2, "view1"]},
+      {"from": [5, "IMAGE"], "to": [2, "view2"]},
+      {"from": [2, "mesh"], "to": [6, "mesh_input"]},
+      {"from": [6, "mesh"], "to": [7, "mesh_input"]},
+      {"from": [7, "textured_mesh"], "to": [8, "mesh_in"]},
+      {"from": [8, "clean_mesh"], "to": [9, "mesh_in"]}
+    ],
+    "outputs": {
+      "glb": {"node_id": 9, "output": "filepath"}
+    }
+  }
+  
